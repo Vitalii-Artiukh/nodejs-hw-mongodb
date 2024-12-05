@@ -67,7 +67,7 @@ export const setupServer = () => {
       return;
     }
     res.status(200).json({
-      message: 'Successfully found contact with id {studentId}!',
+      message: `Successfully found contact with id ${studentId}!`,
       data: student,
     });
     next();
@@ -85,7 +85,7 @@ export const setupServer = () => {
       return;
     }
     res.status(200).json({
-      message: 'Successfully found contact with id {contactId}!',
+      message: `Successfully found contact with id ${contactId}!`,
       data: contact,
     });
     next();
