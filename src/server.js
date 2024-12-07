@@ -14,6 +14,7 @@ export const setupServer = () => {
   app.use(express.json());
   // service cors для кросбраузерних запитів
   app.use(cors());
+
   // service pino для виводу результату в консоль
   app.use(
     pino({
@@ -62,7 +63,7 @@ export const setupServer = () => {
       message: `Successfully found contact with id ${contactId}!`,
       data: contact,
     });
-    next();
+    // next();
   });
 
   // midlevare для хибної сторінки
@@ -75,6 +76,7 @@ export const setupServer = () => {
   // midlevare для невідомої помилки
   app.use((err, req, res, next) => {
     res.status(500).json({
+      status: 500,
       message: 'Something went wrong',
       error: err.message,
     });
