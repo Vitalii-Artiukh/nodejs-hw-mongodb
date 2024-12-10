@@ -69,12 +69,12 @@ export const upsertContactController = async (req, res, next) => {
   });
 };
 
-export const patchContactController = async (req, res) => {
+export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const result = await updateContact(contactId, req.body);
 
   if (!result) {
-    nwxt(createHttpError(404, 'Contact not found'));
+    next(createHttpError(404, 'Contact not found'));
     return;
   }
   res.json({
