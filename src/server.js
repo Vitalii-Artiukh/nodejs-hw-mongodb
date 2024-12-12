@@ -1,10 +1,10 @@
 import express from 'express';
-import pino from 'pino-http';
 import cors from 'cors';
 import { getEnvVar } from './utils/getEnvVar.js';
 import contactsRouter from './routers/contacts.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { logger } from './middlewares/logger.js';
 
 // const PORT = Number(getEnvVar('PORT', '3000'));
 const PORT = Number(process.env.PORT) || Number(getEnvVar('PORT', '3000'));
@@ -18,13 +18,7 @@ export const setupServer = () => {
   app.use(cors());
 
   // service pino для виводу результату в консоль
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-      },
-    }),
-  );
+  app.use(logger);
 
   // поточний час на момент запиту
   app.use((req, res, next) => {
@@ -39,7 +33,7 @@ export const setupServer = () => {
     });
   });
 
-  app.use(contactsRouter);
+  app.use('/contacts', contactsRouter);
 
   app.use('*', notFoundHandler);
 
