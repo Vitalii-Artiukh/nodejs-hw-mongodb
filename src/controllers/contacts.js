@@ -2,7 +2,7 @@ import * as contactServices from '../services/contacts.js';
 import createError from 'http-errors'; // те саме
 import createHttpError from 'http-errors'; // те саме
 
-export const getContactsController = async (req, res, next) => {
+export const getContactsController = async (req, res) => {
   const contacts = await contactServices.getAllContacts();
   res.json({
     status: 200,
@@ -36,7 +36,7 @@ export const createContactController = async (req, res) => {
   });
 };
 
-export const deleteContactController = async (req, res, next) => {
+export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
   const contact = await contactServices.deleteContact(contactId);
 
@@ -46,7 +46,7 @@ export const deleteContactController = async (req, res, next) => {
   res.status(204).send();
 };
 
-export const upsertContactController = async (req, res, next) => {
+export const upsertContactController = async (req, res) => {
   const { contactId } = req.params;
   const result = await contactServices.updateContact(contactId, req.body, {
     upsert: true,
@@ -63,7 +63,7 @@ export const upsertContactController = async (req, res, next) => {
   });
 };
 
-export const patchContactController = async (req, res, next) => {
+export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
   const result = await contactServices.updateContact(contactId, req.body);
 
