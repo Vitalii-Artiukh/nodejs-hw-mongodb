@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { typeListContactType } from '../../constants/contacts.js';
+
+export const typeListContactType = ['work', 'home', 'personal'];
 
 const contactSchema = new Schema(
   {
@@ -34,30 +35,6 @@ const contactSchema = new Schema(
     versionKey: false,
   },
 );
-
-// import { handleSaveError, setUpdateSettings } from './hooks.js';
-
-// import { typeList } from '../../constants/movies.js';
-
-// const movieSchema = new Schema(
-//   {
-//     title: {
-//       type: String,
-//       required: true,
-//     },
-//     director: {
-//       type: String,
-//       required: true,
-//     },
-//     type: {
-//       type: String,
-//       enum: typeList,
-//       default: 'film',
-//       required: true,
-//     },
-//   },
-//   { versionKey: false, timestamps: true },
-// );
 
 // movieSchema.post('save', handleSaveError);
 

@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { typeListContactType } from '../constants/contacts.js';
+import { typeListContactType } from '../db/models/contact.js';
 
 const minLimit = 3;
 const maxLimit = 20;
@@ -38,7 +38,6 @@ export const createContactSchema = Joi.object({
       'string.max': `Email should have at most ${maxLimit} characters`,
     }),
   isFavorite: Joi.boolean(),
-  // contactType: Joi.string().required().valid('work', 'home', 'personal'),
   contactType: Joi.string()
     .required()
     .valid(...typeListContactType)
@@ -75,41 +74,5 @@ export const updateContactSchema = Joi.object({
       'string.max': `Email should have at most ${maxLimit} characters`,
     }),
   isFavorite: Joi.boolean(),
-  // contactType: Joi.string().required().valid('work', 'home', 'personal'),
   contactType: Joi.string().valid(...typeListContactType),
 });
-
-//
-// export const dataToValidate = {
-//   name: 'Vit Art',
-//   phoneNumber: '322233456',
-//   email: 'vit_art@yahoo.com',
-//   isFavorite: true,
-//   contactType: 'personal',
-// };
-
-// const validationResult = createContactSchema.validateAsync(dataToValidate);
-// if (validationResult.error) {
-//   console.error(validationResult.error.message);
-// } else {
-//   console.log('Data is valid!');
-// }
-//
-
-// import Joi from 'joi';
-
-// import { typeList } from '../constants/movies.js';
-
-// export const movieAddSchema = Joi.object({
-//   title: Joi.string().required(),
-//   director: Joi.string().required().messages({
-//     'any.required': `режисера треба вказати`,
-//   }),
-//   type: Joi.string().valid(...typeList),
-// });
-
-// export const movieUpdateSchema = Joi.object({
-//   title: Joi.string(),
-//   director: Joi.string(),
-//   type: Joi.string().valid(...typeList),
-// });
