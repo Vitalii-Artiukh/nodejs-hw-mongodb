@@ -5,7 +5,7 @@ import {
   createContactSchema,
   updateContactSchema,
 } from '../validation/contact.js';
-import { validateBody } from '../middlewares/validateBody.js';
+import { validateBody } from '../validation/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();

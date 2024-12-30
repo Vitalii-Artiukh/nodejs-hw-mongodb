@@ -5,6 +5,7 @@ import contactsRouter from './routers/contacts.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { logger } from './middlewares/logger.js';
+import authRouter from './routers/auth.js';
 
 const PORT = Number(process.env.PORT) || Number(getEnvVar('PORT', '3000'));
 
@@ -20,10 +21,10 @@ export const setupServer = () => {
   app.use(logger);
 
   // поточний час на момент запиту
-  app.use((req, res, next) => {
-    console.log(`Time: ${new Date().toLocaleString()}`);
-    next();
-  });
+  // app.use((req, res, next) => {
+  //   console.log(`Time: ${new Date().toLocaleString()}`);
+  //   next();
+  // });
 
   // midlevare для домашньої сторінки
   app.get('/', (req, res) => {
@@ -31,6 +32,9 @@ export const setupServer = () => {
       message: "Congratulations, you're home.",
     });
   });
+
+  // роутер для реєстрації
+  app.use('/auth', authRouter);
 
   app.use('/contacts', contactsRouter);
 
