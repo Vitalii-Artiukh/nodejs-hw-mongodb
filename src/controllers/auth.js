@@ -1,4 +1,3 @@
-import { access } from 'fs';
 import { loginUser, registerUser } from '../services/auth.js';
 
 export const registerUserController = async (req, res) => {
@@ -23,6 +22,7 @@ export const loginUserController = async (req, res) => {
     httpOnly: true,
     expires: session.refreshTokenValidUntil,
   });
+
   res.json({
     status: 200,
     message: 'Successfully login user',

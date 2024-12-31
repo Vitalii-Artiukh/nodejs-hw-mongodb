@@ -34,7 +34,8 @@ export const loginUser = async ({ email, password }) => {
 
   const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
-  return SessionCollection.create({
+
+  return await SessionCollection.create({
     userId: user._id,
     accessToken,
     refreshToken,
