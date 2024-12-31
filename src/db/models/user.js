@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-// import { emailRegExp } from '../../constants/users.js';
 import { handleSaveError, setUpdateSettings } from './hooks.js';
+import { emailRegExp } from '../../constants/users.js';
 
 const usersSchema = new Schema(
   {
@@ -12,7 +12,7 @@ const usersSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      //   match: emailRegExp,
+      match: emailRegExp,
     },
     password: {
       type: String,
@@ -24,6 +24,12 @@ const usersSchema = new Schema(
     versionKey: false,
   },
 );
+
+usersSchema.methods.toJson = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
 
 usersSchema.post('save', handleSaveError);
 usersSchema.pre('findOneAndUpdate', setUpdateSettings);
