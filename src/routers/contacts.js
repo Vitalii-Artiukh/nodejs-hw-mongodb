@@ -7,8 +7,11 @@ import {
 } from '../validation/contact.js';
 import { validateBody } from '../validation/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router();
+
+router.use(authenticate);
 
 router.get('/', ctrlWrapper(contactsControllers.getContactsController));
 router.get(

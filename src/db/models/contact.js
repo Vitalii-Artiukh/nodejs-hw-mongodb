@@ -27,6 +27,11 @@ const contactSchema = new Schema(
       enum: typeListContactType,
       default: 'personal',
     },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
+      required: true,
+    },
   },
   {
     // Це додає до об'єкту два поля:
