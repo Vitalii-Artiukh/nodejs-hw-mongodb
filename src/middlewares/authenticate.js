@@ -13,6 +13,7 @@ export const authenticate = async (req, res, next) => {
   }
 
   const session = await getSession({ accessToken });
+  // console.log(session.userId);
   if (!session) {
     return next(createHttpError(401, 'Session not found'));
   }
@@ -20,7 +21,8 @@ export const authenticate = async (req, res, next) => {
     return next(createHttpError(401, 'Access token expired'));
   }
 
-  const user = await getUser({ _id: session.userId });
+  const user = await getUser(session.userId);
+  // console.log(user);
   if (!user) {
     return next(createHttpError(401, 'User non found'));
   }

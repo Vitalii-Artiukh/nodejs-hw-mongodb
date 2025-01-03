@@ -44,8 +44,43 @@ export const loginUser = async ({ email, password }) => {
   });
 };
 
-export const logoutUser = async (sessionId) => {
-  await SessionCollection.deleteOne({ _id: sessionId });
+const createSession = async (userId) => {
+  const accessToken = randomBytes(30).toString('base64');
+  const refreshToken = randomBytes(30).toString('base64');
+
+  return await SessionCollection.create({
+    userId,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: Date.now() + accessTokenLifetime,
+    refreshTokenValidUntil: Date.now() + refreshTokenLifetime,
+  });
+};
+
+export const refreshUserSession = async ({ sessionId, refreshToken }) => {
+  const session = await SessionCollection.findOne({
+    _id: sessionId,
+    refreshToken,
+  });
+  if (!session) {
+    throw createHttpError(401, 'Refresh token invalid');
+  }
+  const isSessionTokenExpired = Date.now() > session.refreshTokenValidUntil;
+  if (isSessionTokenExpired) {
+    throw createHttpError(401, 'Session token expired');
+  }
+  const newSession = createSession();
+
+  await SessionCollection.deleteOne({ _id: sessionId, refreshToken });
+
+  return await SessionCollection.create({
+    userId: session.userId,
+    ...newSession,
+  });
+};
+
+export const logoutUser = async (sessionId, refreshToken) => {
+  await SessionCollection.deleteOne({ _id: sessionId, refreshToken });
 };
 
 export const getUser = (filter) => UsersCollection.findOne(filter);
