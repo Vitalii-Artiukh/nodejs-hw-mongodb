@@ -14,6 +14,7 @@ export const getContactsController = async (req, res) => {
   // const { _id: userId } = req.user;
   // filter.userId = userId;
   filter.userId = req.user._id;
+  console.log(req.user._id);
 
   const contacts = await contactServices.getAllContacts({
     page,
@@ -34,8 +35,11 @@ export const getContactByIdController = async (req, res) => {
   const { _id: userId } = req.user;
   const { contactId: contactId } = req.params;
 
+  // console.log({ userId });
+  // console.log(contactId);
+
   const contact = await contactServices.getContact({ contactId, userId });
-  console.log(contactId, userId);
+  // console.log(contact);
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
@@ -64,8 +68,6 @@ export const createContactController = async (req, res) => {
 export const deleteContactController = async (req, res) => {
   const { _id: userId } = req.user;
   const { contactId: contactId } = req.params;
-  // console.log('userId:', userId);
-  // console.log('contactId:', contactId);
 
   const contact = await contactServices.deleteContact({ contactId, userId });
 

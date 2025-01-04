@@ -55,6 +55,7 @@ export const getContactById = (contactId) =>
 //   const contact = await ContactsCollection.findById(contactId);
 //   return contact;
 // };
+
 export const getContact = (filter) => ContactsCollection.findOne(filter);
 
 export const createContact = (contactData) =>
@@ -65,7 +66,7 @@ export const createContact = (contactData) =>
 // };
 
 export const deleteContact = (filter) =>
-  ContactsCollection.findByIdAndDelete(filter);
+  ContactsCollection.findOneAndDelete(filter);
 // {
 //   const contact = await ContactsCollection.findOneAndDelete({
 //     _id: contactId,

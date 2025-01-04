@@ -15,13 +15,12 @@ export const setupServer = () => {
   const app = express();
 
   app.use(express.json());
+  app.use(cookieParser());
   // service cors для кросбраузерних запитів
   app.use(cors());
 
   // service pino для виводу результату в консоль
   // app.use(logger);
-
-  app.use(cookieParser());
 
   // поточний час на момент запиту
   // app.use((req, res, next) => {
