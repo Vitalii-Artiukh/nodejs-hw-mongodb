@@ -4,12 +4,7 @@ import {
   registerValidationUserSchema,
   loginValidationUserSchema,
 } from '../validation/auth.js';
-import {
-  loginUserController,
-  registerUserController,
-  logoutUserController,
-  refreshUserSessionController,
-} from '../controllers/auth.js';
+import * as authController from '../controllers/auth.js';
 import { validateBody } from '../validation/validateBody.js';
 
 const authRouter = Router();
@@ -17,17 +12,20 @@ const authRouter = Router();
 authRouter.post(
   '/register',
   validateBody(registerValidationUserSchema),
-  ctrlWrapper(registerUserController),
+  ctrlWrapper(authController.registerUserController),
 );
 
 authRouter.post(
   '/login',
   validateBody(loginValidationUserSchema),
-  ctrlWrapper(loginUserController),
+  ctrlWrapper(authController.loginUserController),
 );
 
-authRouter.post('/refresh', ctrlWrapper(refreshUserSessionController));
+authRouter.post(
+  '/refresh',
+  ctrlWrapper(authController.refreshUserSessionController),
+);
 
-authRouter.post('/logout', ctrlWrapper(logoutUserController));
+authRouter.post('/logout', ctrlWrapper(authController.logoutUserController));
 
 export default authRouter;

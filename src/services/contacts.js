@@ -41,42 +41,19 @@ export const getAllContacts = async ({
   };
 };
 
-// не потрібно використовувати async/await тому що це є в controlers.
-
-// export const getAllContacts = () => ContactsCollection.find();
-// {
-//   const contacts = await ContactsCollection.find();
-//   return contacts;
-// };
-
 export const getContactById = (contactId) =>
   ContactsCollection.findById(contactId);
-// {
-//   const contact = await ContactsCollection.findById(contactId);
-//   return contact;
-// };
 
 export const getContact = (filter) => ContactsCollection.findOne(filter);
 
 export const createContact = (contactData) =>
   ContactsCollection.create(contactData);
-// {
-//   const contact = await ContactsCollection.create(contactData);
-//   return contact;
-// };
 
 export const deleteContact = (filter) =>
   ContactsCollection.findOneAndDelete(filter);
-// {
-//   const contact = await ContactsCollection.findOneAndDelete({
-//     _id: contactId,
-//   });
-//   return contact;
-// };
 
 export const updateContact = async (filter, contactData, options = {}) => {
   const rawResult = await ContactsCollection.findOneAndUpdate(
-    // { id: contactId }
     filter,
     contactData,
     {
