@@ -16,14 +16,24 @@ const createSession = () => ({
 });
 
 export const registerUser = async (payload) => {
-  const { email, password } = payload;
+  const { name, email, password } = payload;
   const user = await UsersCollection.findOne({ email });
+  console.log(payload);
   if (user) {
     throw createHttpError(409, 'User already exist');
   }
   const hashPassword = await bcrypt.hash(password, 10);
 
-  return await UsersCollection.create({ ...payload, password: hashPassword });
+  const newUser = await UsersCollection.create({
+    ...payload,
+    password: hashPassword,
+  });
+  const { _id } = newUser;
+  return {
+    name,
+    email,
+    _id,
+  };
 };
 
 export const loginUser = async ({ email, password }) => {
