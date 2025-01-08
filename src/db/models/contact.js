@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { handleSaveError, setUpdateSettings } from './hooks.js';
+import { emailRegExp } from '../../constants/users.js';
 
 export const typeListContactType = ['work', 'home', 'personal'];
 
@@ -16,6 +17,7 @@ const contactSchema = new Schema(
     email: {
       type: String,
       required: false,
+      match: emailRegExp,
     },
     isFavourite: {
       type: Boolean,
