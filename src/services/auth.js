@@ -45,6 +45,19 @@ export const registerUser = async (payload) => {
   };
 };
 
+// export const verifyEmail = async (token) => {
+//   try {
+//     const { email } = jwt.verify(token, getEnvVar('JWT_SECRET'));
+//     const user = await UsersCollection.findOne({ email });
+//     if (!user) {
+//       throw createHttpError(404, 'User not found');
+//     }
+//     await UsersCollection.updateOne({ email }, { verify: true });
+//   } catch (error) {
+//     throw createHttpError(401, error.message);
+//   }
+// };
+
 export const loginUser = async ({ email, password }) => {
   const user = await UsersCollection.findOne({ email });
   if (!user) {
@@ -56,9 +69,9 @@ export const loginUser = async ({ email, password }) => {
     throw createHttpError(401, 'Password invalid');
   }
 
-  if (!user.verify) {
-    throw createHttpError(401, 'Please verify your email');
-  }
+  // if (!user.verify) {
+  //   throw createHttpError(401, 'Please verify your email');
+  // }
 
   await SessionCollection.deleteOne({ userId: user._id });
 
@@ -126,7 +139,7 @@ export const requestResetEmailToken = async (email) => {
 
   const html = template({
     name: user.name,
-    link: `${getEnvVar('APP_DOMAIN')}/reset-pwd?token=${resetToken}`,
+    link: `${getEnvVar('APP_DOMAIN')}/reset-password?token=${resetToken}`,
   });
 
   try {
@@ -145,13 +158,25 @@ export const requestResetEmailToken = async (email) => {
   }
 };
 
-export const resetPassword = async (payload) => {
+export const resetPasswordLink = async (token) => {
   let entries;
 
   try {
-    entries = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
+    entries = jwt.verify(token, getEnvVar('JWT_SECRET'));
   } catch (error) {
     if (error instanceof Error) throw createHttpError(401, error.message);
+    throw error;
+  }
+
+  return { token };
+};
+
+export const resetPassword = async (payload) => {
+  try {
+    jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
+  } catch (error) {
+    if (error instanceof Error)
+      throw createHttpError(401, 'Token is expired or invalid.');
     throw error;
   }
 
@@ -162,6 +187,8 @@ export const resetPassword = async (payload) => {
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
+
+  await SessionCollection.deleteOne({ userId: user._id });
 
   const hashPassword = await bcrypt.hash(payload.password, 10);
 

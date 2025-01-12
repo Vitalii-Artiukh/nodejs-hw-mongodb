@@ -24,12 +24,28 @@ export const registerUserController = async (req, res) => {
   });
 };
 
+// export const verifyEmailController = async (req, res) => {
+//   await servicesAuth.verifyEmail(req.query.token);
+//   res.json({
+//     status: 200,
+//     message: 'Email has been successfully verified.',
+//     data: {},
+//   });
+// };
+
 export const requestResetEmailController = async (req, res) => {
   await servicesAuth.requestResetEmailToken(req.body.email);
   res.json({
     status: 200,
     message: 'Reset password email has been successfully sent.',
     data: {},
+  });
+};
+
+export const resetPasswordLinkController = async (req, res) => {
+  const token = await servicesAuth.resetPasswordLink(req.query.token);
+  res.json({
+    message: token,
   });
 };
 
