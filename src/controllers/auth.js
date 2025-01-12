@@ -15,6 +15,8 @@ const setupSession = (res, session) => {
 export const registerUserController = async (req, res) => {
   const user = await servicesAuth.registerUser(req.body);
 
+  console.log(user);
+
   res.status(201).json({
     status: 201,
     message: 'Successfully registered a user!',
@@ -27,6 +29,15 @@ export const requestResetEmailController = async (req, res) => {
   res.json({
     status: 200,
     message: 'Reset password email has been successfully sent.',
+    data: {},
+  });
+};
+
+export const resetPasswordController = async (req, res) => {
+  await servicesAuth.resetPassword(req.body);
+  res.json({
+    status: 200,
+    message: 'Password has been successfully reset.',
     data: {},
   });
 };
