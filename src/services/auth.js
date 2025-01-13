@@ -159,10 +159,8 @@ export const requestResetEmailToken = async (email) => {
 };
 
 export const resetPasswordLink = async (token) => {
-  let entries;
-
   try {
-    entries = jwt.verify(token, getEnvVar('JWT_SECRET'));
+    jwt.verify(token, getEnvVar('JWT_SECRET'));
   } catch (error) {
     if (error instanceof Error) throw createHttpError(401, error.message);
     throw error;
@@ -172,8 +170,9 @@ export const resetPasswordLink = async (token) => {
 };
 
 export const resetPassword = async (payload) => {
+  let entries;
   try {
-    jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
+    entries = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
   } catch (error) {
     if (error instanceof Error)
       throw createHttpError(401, 'Token is expired or invalid.');

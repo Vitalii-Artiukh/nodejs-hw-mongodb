@@ -16,6 +16,7 @@ export const setupServer = () => {
 
   app.use(express.json());
   app.use(cookieParser());
+  app.use(express.static('uploads'));
 
   // service cors для кросбраузерних запитів
   app.use(cors());

@@ -10,6 +10,7 @@ const contactSchema = new Schema(
       type: String,
       required: true,
     },
+
     phoneNumber: {
       type: String,
       required: true,
@@ -18,6 +19,9 @@ const contactSchema = new Schema(
       type: String,
       required: false,
       match: emailRegExp,
+    },
+    photo: {
+      type: String,
     },
     isFavourite: {
       type: Boolean,
