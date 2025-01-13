@@ -1,6 +1,7 @@
 import cloudinary from 'cloudinary';
 import { getEnvVar } from './getEnvVar.js';
 import { CLOUDINARY } from '../constants/index.js';
+import { unlink } from 'node:fs/promises';
 
 cloudinary.v2.config({
   secure: true,
@@ -13,5 +14,6 @@ export const saveFileToCloudinary = async (file) => {
   const response = await cloudinary.v2.uploader.upload(file.path, {
     folder: 'avatars',
   });
+  await unlink(file.path);
   return response.secure_url;
 };
