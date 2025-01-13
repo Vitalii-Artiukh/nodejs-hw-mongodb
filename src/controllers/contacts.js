@@ -5,6 +5,8 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { saveFileToUploadsDir } from '../utils/saveFileToUploadsDir.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { deleteFileFromCloudinary } from '../utils/deleteFileFromCloudinary.js';
+import { deleteFileFromUploadsDir } from '../utils/deleteFileFromUploadsDir.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 
 export const getContactsController = async (req, res) => {
@@ -48,6 +50,32 @@ export const getContactByIdController = async (req, res) => {
   });
 };
 
+export const deleteContactController = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { contactId: _id } = req.params;
+
+  const getContact = await contactServices.getContact({ _id, userId });
+  const photoUrl = getContact.photo;
+
+  // console.log(photoUrl);
+
+  if (photoUrl) {
+    const cloudinaryEnable = getEnvVar('CLOUDINARY_ENABLE') === 'true';
+    if (cloudinaryEnable) {
+      await deleteFileFromCloudinary(photoUrl);
+    } else {
+      await deleteFileFromUploadsDir(photoUrl);
+    }
+  }
+
+  const contact = await contactServices.deleteContact({ _id, userId });
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
+  res.status(204).send();
+};
+
 export const createContactController = async (req, res) => {
   const cloudinaryEnable = getEnvVar('CLOUDINARY_ENABLE') === 'true';
   let photo;
@@ -71,18 +99,6 @@ export const createContactController = async (req, res) => {
     message: 'Successfully created a contact!',
     data: contact,
   });
-};
-
-export const deleteContactController = async (req, res) => {
-  const { _id: userId } = req.user;
-  const { contactId: _id } = req.params;
-
-  const contact = await contactServices.deleteContact({ _id, userId });
-
-  if (!contact) {
-    throw createHttpError(404, 'Contact not found');
-  }
-  res.status(204).send();
 };
 
 export const upsertContactController = async (req, res) => {
