@@ -50,32 +50,6 @@ export const getContactByIdController = async (req, res) => {
   });
 };
 
-export const deleteContactController = async (req, res) => {
-  const { _id: userId } = req.user;
-  const { contactId: _id } = req.params;
-
-  const getContact = await contactServices.getContact({ _id, userId });
-  const photoUrl = getContact.photo;
-
-  // console.log(photoUrl);
-
-  if (photoUrl) {
-    const cloudinaryEnable = getEnvVar('CLOUDINARY_ENABLE') === 'true';
-    if (cloudinaryEnable) {
-      await deleteFileFromCloudinary(photoUrl);
-    } else {
-      await deleteFileFromUploadsDir(photoUrl);
-    }
-  }
-
-  const contact = await contactServices.deleteContact({ _id, userId });
-
-  if (!contact) {
-    throw createHttpError(404, 'Contact not found');
-  }
-  res.status(204).send();
-};
-
 export const createContactController = async (req, res) => {
   const cloudinaryEnable = getEnvVar('CLOUDINARY_ENABLE') === 'true';
   let photo;
@@ -125,11 +99,6 @@ export const upsertContactController = async (req, res) => {
 };
 
 export const patchContactController = async (req, res) => {
-  // const photo = req.file;
-  // let photoUrl;
-  // if (photo) {
-  //   photoUrl = await saveFileToUploadsDir(photo);
-  // }
   let photo;
   const cloudinaryEnable = getEnvVar('CLOUDINARY_ENABLE') === 'true';
   if (req.file) {
@@ -155,4 +124,26 @@ export const patchContactController = async (req, res) => {
     message: 'Successfully patched a contact!',
     data: result.contact,
   });
+};
+
+export const deleteContactController = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { contactId: _id } = req.params;
+  const contact = await contactServices.deleteContact({ _id, userId });
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
+  const photoUrl = contact.photo;
+  if (photoUrl) {
+    const cloudName = photoUrl.split('/').includes(getEnvVar('CLOUD_NAME'));
+    if (cloudName) {
+      await deleteFileFromCloudinary(photoUrl);
+    } else {
+      await deleteFileFromUploadsDir(photoUrl);
+    }
+  }
+
+  res.status(204).send();
 };

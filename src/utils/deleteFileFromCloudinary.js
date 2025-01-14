@@ -12,11 +12,8 @@ cloudinary.v2.config({
 export const deleteFileFromCloudinary = async (fileUrl) => {
   const publicId = fileUrl.split('/').pop().split('.')[0];
 
-  if (!publicId) {
-    return;
+  if (publicId) {
+    const result = await cloudinary.v2.uploader.destroy(publicId);
+    return result;
   }
-  console.log(publicId);
-  await cloudinary.v2.uploader
-    .destroy(publicId)
-    .then((result) => console.log(result));
 };
