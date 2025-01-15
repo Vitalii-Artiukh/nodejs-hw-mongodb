@@ -1,25 +1,22 @@
 import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import {
-  registerValidationUserSchema,
-  loginValidationUserSchema,
-  resetPasswordSchema,
-} from '../validation/auth.js';
+import * as authValidate from '../validation/auth.js';
 import * as authController from '../controllers/auth.js';
 import { validateBody } from '../validation/validateBody.js';
 import { requestResetEmailSchema } from '../validation/auth.js';
+import { getGoogleOAuthUrlController } from '../controllers/auth.js';
 
 const authRouter = Router();
 
 authRouter.post(
   '/register',
-  validateBody(registerValidationUserSchema),
+  validateBody(authValidate.registerValidationUserSchema),
   ctrlWrapper(authController.registerUserController),
 );
 
 authRouter.post(
   '/login',
-  validateBody(loginValidationUserSchema),
+  validateBody(authValidate.loginValidationUserSchema),
   ctrlWrapper(authController.loginUserController),
 );
 
@@ -46,10 +43,18 @@ authRouter.get(
 
 authRouter.post(
   '/reset-pwd',
-  validateBody(resetPasswordSchema),
+  validateBody(authValidate.resetPasswordSchema),
   ctrlWrapper(authController.resetPasswordController),
 );
 
 authRouter.post('/logout', ctrlWrapper(authController.logoutUserController));
+
+authRouter.get('/get-oath-url', ctrlWrapper(getGoogleOAuthUrlController));
+
+authRouter.post(
+  '/confirm-oauth',
+  validateBody(authValidate.loginWithGoogleOAuthSchema),
+  ctrlWrapper(authController.loginWithGoogleController),
+);
 
 export default authRouter;

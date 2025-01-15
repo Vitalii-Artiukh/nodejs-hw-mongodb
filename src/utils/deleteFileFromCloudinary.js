@@ -10,7 +10,7 @@ cloudinary.v2.config({
 });
 
 export const deleteFileFromCloudinary = async (fileUrl) => {
-  const publicId = fileUrl.split('/').pop().split('.')[0];
+  const publicId = fileUrl.split('/').slice(-2).join('/').split('.')[0];
 
   if (publicId) {
     const result = await cloudinary.v2.uploader.destroy(publicId);
