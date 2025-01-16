@@ -1,21 +1,28 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Radial app
+  title: Contacts app
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description: <опис вашого додатку>
+  description: This is a documentation of contacts app
 tags:
-  # теги, що ви будете використовувати
-  #   - name: Students
-  #   description: Operations about users.
-  # - name: Auth
-  #   description: Auth operations.
+  - name: Contacts
+  description: Operations about contacts.
+  - name: Auth
+  description: Authentication and registration operation.
 servers:
   - url: http://localhost:3000
   - url: https://nodejs-hw-mongodb-8q3t.onrender.com
 paths:
+  /contacts:
+    get:
+      $ref: '../swagger/paths/contacts/get.yaml'
+    post:
+      $ref: '../swagger/paths/contacts/post.yaml'
+  /contacts/{id}:
+    get:
+      $ref: ../src/routes/contacts/{id}/get.yaml
   # тут будуть посилання на ендпоінти
 components:
   securitySchemes:

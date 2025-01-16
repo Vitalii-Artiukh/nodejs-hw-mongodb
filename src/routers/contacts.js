@@ -55,4 +55,6 @@ router.patch(
   ctrlWrapper(contactsControllers.patchContactController),
 );
 
+// router.get('/api-docs');
+
 export default router;
