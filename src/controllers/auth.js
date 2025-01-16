@@ -1,5 +1,5 @@
 import * as servicesAuth from '../services/auth.js';
-import { generateAuthUrl } from '../utils/googleOAuth2.js';
+import { generateOAuthUrl } from '../utils/googleOAuth2.js';
 import { loginOrSignupWithGoogle } from '../services/auth.js';
 
 const setupSession = (res, session) => {
@@ -105,7 +105,8 @@ export const logoutUserController = async (req, res) => {
 };
 
 export const getGoogleOAuthUrlController = async (req, res) => {
-  const url = generateAuthUrl();
+  const url = generateOAuthUrl();
+
   res.json({
     status: 200,
     message: 'Successfully get Google OAuth url!',
@@ -116,7 +117,9 @@ export const getGoogleOAuthUrlController = async (req, res) => {
 };
 
 export const loginWithGoogleController = async (req, res) => {
-  const session = await loginOrSignupWithGoogle(req.body.code);
+  const { code } = req.body;
+  const session = await loginOrSignupWithGoogle(code);
+  // const session = await loginOrSignupWithGoogle(req.body.code);
   setupSession(res, session);
 
   res.json({

@@ -6,7 +6,7 @@ import createHttpError from 'http-errors';
 
 const PATH_JSON = path.join(process.cwd(), 'google-oauth.json');
 
-const oathConfig = JSON.parse(await readFile(PATH_JSON));
+const oathConfig = JSON.parse(await readFile(PATH_JSON, 'utf-8'));
 
 const googleOAuthClient = new OAuth2Client({
   clientId: getEnvVar('GOOGLE_AUTH_CLIENT_ID'),
@@ -14,7 +14,7 @@ const googleOAuthClient = new OAuth2Client({
   redirectUri: oathConfig.web.redirect_uris[0],
 });
 
-export const generateAuthUrl = () =>
+export const generateOAuthUrl = () =>
   googleOAuthClient.generateAuthUrl({
     scope: [
       'https://www.googleapis.com/auth/userinfo.profile',
@@ -34,11 +34,13 @@ export const validateCode = async (code) => {
 };
 
 export const getFullNameFromGoogleTokenPayload = (payload) => {
-  let fullName = 'Guest';
-  if (payload.given_name && payload.family_name) {
-    fullName = `${payload.given_name} ${payload.family_name}`;
-  } else if (payload.given_name) {
-    fullName = payload.given_name;
+  let fullName = payload.name;
+  if (!fullName) {
+    if (payload.given_name && payload.family_name) {
+      fullName = `${payload.given_name} ${payload.family_name}`;
+    } else if (payload.given_name) {
+      fullName = payload.given_name;
+    }
   }
   return fullName;
 };

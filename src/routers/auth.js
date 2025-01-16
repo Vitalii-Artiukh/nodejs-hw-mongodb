@@ -4,7 +4,6 @@ import * as authValidate from '../validation/auth.js';
 import * as authController from '../controllers/auth.js';
 import { validateBody } from '../validation/validateBody.js';
 import { requestResetEmailSchema } from '../validation/auth.js';
-import { getGoogleOAuthUrlController } from '../controllers/auth.js';
 
 const authRouter = Router();
 
@@ -49,7 +48,10 @@ authRouter.post(
 
 authRouter.post('/logout', ctrlWrapper(authController.logoutUserController));
 
-authRouter.get('/get-oath-url', ctrlWrapper(getGoogleOAuthUrlController));
+authRouter.get(
+  '/get-google-oauth-url',
+  ctrlWrapper(authController.getGoogleOAuthUrlController),
+);
 
 authRouter.post(
   '/confirm-oauth',

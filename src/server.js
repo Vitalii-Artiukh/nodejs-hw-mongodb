@@ -22,7 +22,7 @@ export const setupServer = () => {
   app.use(cors());
 
   // service pino для виводу результату в консоль
-  app.use(logger);
+  // app.use(logger);
 
   // поточний час на момент запиту
   // app.use((req, res, next) => {
@@ -41,6 +41,8 @@ export const setupServer = () => {
   app.use('/auth', authRouter);
 
   app.use('/contacts', contactsRouter);
+
+  app.use('/api-docs'); //////////////////////
 
   app.use('*', notFoundHandler);
 
