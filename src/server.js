@@ -42,6 +42,8 @@ export const setupServer = () => {
 
   app.use('/contacts', contactsRouter);
 
+  // router.get('/api-docs');
+
   app.use('*', notFoundHandler);
 
   app.use(errorHandler);
