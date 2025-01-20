@@ -1,4 +1,4 @@
-description: 'Unauthorized error'
+description: 'Contact not found'
 content:
   application/json:
     schema:
@@ -10,6 +10,9 @@ content:
         status:
           type: integer
           example: 404
+        message:
+          type: string
+          example: Not Found
         data:
           type: object
           required:

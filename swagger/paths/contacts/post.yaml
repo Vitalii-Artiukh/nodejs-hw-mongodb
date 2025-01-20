@@ -10,16 +10,12 @@ requestBody:
     multipart/form-data:
       schema:
         type: object
-        required: -name
-          -email
-          -phone
-          -contactType
-          -UserId
+        required:
+          - name
+          - email
+          - phoneNumber
+          - contactType
         properties:
-          UserId:
-            description: 'Unique user identifier'
-            type: string
-            example: '67863b4a55fe87d0fc74f230'
           name:
             description: 'The name of the contact'
             type: string
@@ -51,9 +47,10 @@ responses:
       application/json:
         schema:
           type: object
-          required: -status
-            -message
-            -data
+          required:
+            - status
+            - message
+            - data
           properties:
             status:
               type: integer

@@ -32,7 +32,7 @@ parameters:
     name: filter
     schema:
       type: string
-      example: 'name'
+      example: 'contactType'
     description: 'Filter contacts by name'
   - in: query
     name: favourite
