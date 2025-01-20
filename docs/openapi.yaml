@@ -8,9 +8,9 @@ info:
   description: This is a documentation of contacts app
 tags:
   - name: Contacts
-  description: Operations about contacts.
-  - name: Auth
-  description: Authentication and registration operation.
+    description: Operations about contacts.
+  # - name: Auth
+  #   description: Authentication and registration operation.
 servers:
   - url: http://localhost:3000
   - url: https://nodejs-hw-mongodb-8q3t.onrender.com
@@ -22,7 +22,7 @@ paths:
       $ref: ../swagger/paths/contacts/post.yaml
   /contacts/{id}:
     get:
-      $ref: ../src/routes/contacts/{id}/get.yaml
+      $ref: ../swagger/paths/contacts/{id}/get.yaml
 components:
   securitySchemes:
     bearerAuth:

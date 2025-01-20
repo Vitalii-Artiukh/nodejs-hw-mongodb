@@ -10,7 +10,7 @@ parameters:
     name: page
     schema:
       type: integer
-    example: 1
+      example: 1
   - in: query
     name: perPage
     schema:
@@ -49,7 +49,7 @@ parameters:
       enum: ['personal', 'home', 'work']
 responses:
   '200':
-    description: Successfully found contacts!
+    description: Display all contacts
     content:
       application/json:
         schema:

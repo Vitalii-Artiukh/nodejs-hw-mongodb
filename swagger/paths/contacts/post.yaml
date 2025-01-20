@@ -10,8 +10,7 @@ requestBody:
     multipart/form-data:
       schema:
         type: object
-        required:
-          -name
+        required: -name
           -email
           -phone
           -contactType
@@ -37,7 +36,7 @@ requestBody:
             description: 'The type of the contact'
             type: string
             example: 'personal'
-              enum: ['personal', 'home', 'work']
+            enum: ['personal', 'home', 'work']
           isFavourite:
             description: 'Preferred contact'
             type: boolean
@@ -52,8 +51,7 @@ responses:
       application/json:
         schema:
           type: object
-          required:
-            -status
+          required: -status
             -message
             -data
           properties:
@@ -68,4 +66,3 @@ responses:
               $ref: '../../components/schemas/contact.yaml'
   '401':
     $ref: '../../components/responses/401.yaml'
-
