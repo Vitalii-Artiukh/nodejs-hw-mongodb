@@ -42,7 +42,7 @@ requestBody:
           photo:
             description: 'Link to contact photo'
             type: string
-            example: 'https://res.cloudinary.com/dt7bqfodn/image/upload/v1736799373/avatars/mbdutrybzjxxc3ywlc70.jpg'
+            format: binary
 responses:
   '200':
     description: 'Contact changed'
@@ -63,8 +63,7 @@ responses:
               example: 'Successfully patched a contact!'
             data:
               type: object
-              items:
-                $ref: ../../../components/schemas/contact.yaml
+              $ref: ../../../components/schemas/contact.yaml
   '401':
     $ref: ../../../components/responses/401.yaml
   '404':

@@ -77,17 +77,8 @@
           },
           {
             "in": "query",
-            "name": "filter",
-            "schema": {
-              "type": "string",
-              "example": "contactType"
-            },
-            "description": "Filter contacts by name"
-          },
-          {
-            "in": "query",
-            "name": "favourite",
-            "description": "Filter contacts by favourite",
+            "name": "isFavourite",
+            "description": "Filter contacts by isFavourite",
             "schema": {
               "type": "boolean",
               "example": true
@@ -96,7 +87,7 @@
           {
             "in": "query",
             "name": "contactType",
-            "description": "Filter contacts by contact type",
+            "description": "Filter contacts by contactType",
             "schema": {
               "type": "string",
               "example": "personal",
@@ -202,7 +193,6 @@
                 "type": "object",
                 "required": [
                   "name",
-                  "email",
                   "phoneNumber",
                   "contactType"
                 ],
@@ -239,7 +229,7 @@
                   "photo": {
                     "description": "Link to contact photo",
                     "type": "string",
-                    "example": "https://res.cloudinary.com/dt7bqfodn/image/upload/v1736799373/avatars/mbdutrybzjxxc3ywlc70.jpg"
+                    "format": "binary"
                   }
                 }
               }
@@ -411,7 +401,7 @@
                   "photo": {
                     "description": "Link to contact photo",
                     "type": "string",
-                    "example": "https://res.cloudinary.com/dt7bqfodn/image/upload/v1736799373/avatars/mbdutrybzjxxc3ywlc70.jpg"
+                    "format": "binary"
                   }
                 }
               }
@@ -441,9 +431,7 @@
                     },
                     "data": {
                       "type": "object",
-                      "items": {
-                        "$ref": "#/components/schemas/contact"
-                      }
+                      "$ref": "#/components/schemas/contact"
                     }
                   }
                 }
@@ -512,6 +500,7 @@
           "name",
           "email",
           "phoneNumber",
+          "isFavourite",
           "contactType"
         ],
         "properties": {

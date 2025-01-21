@@ -12,7 +12,6 @@ requestBody:
         type: object
         required:
           - name
-          - email
           - phoneNumber
           - contactType
         properties:
@@ -39,7 +38,7 @@ requestBody:
           photo:
             description: 'Link to contact photo'
             type: string
-            example: 'https://res.cloudinary.com/dt7bqfodn/image/upload/v1736799373/avatars/mbdutrybzjxxc3ywlc70.jpg'
+            format: binary
 responses:
   '201':
     description: 'Contact created'
