@@ -17,23 +17,22 @@ const setupSession = (res, session) => {
 export const registerUserController = async (req, res) => {
   const user = await servicesAuth.registerUser(req.body);
 
-  console.log(user);
-
   res.status(201).json({
     status: 201,
+    verify: 'Please verify your email',
     message: 'Successfully registered a user!',
     data: user,
   });
 };
 
-// export const verifyEmailController = async (req, res) => {
-//   await servicesAuth.verifyEmail(req.query.token);
-//   res.json({
-//     status: 200,
-//     message: 'Email has been successfully verified.',
-//     data: {},
-//   });
-// };
+export const verifyEmailController = async (req, res) => {
+  await servicesAuth.verifyEmail(req.query.token);
+  res.json({
+    status: 200,
+    message: 'Email has been successfully verified.',
+    data: {},
+  });
+};
 
 export const requestResetEmailController = async (req, res) => {
   await servicesAuth.requestResetEmailToken(req.body.email);
