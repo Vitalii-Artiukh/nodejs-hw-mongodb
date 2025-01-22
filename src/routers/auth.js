@@ -30,10 +30,10 @@ authRouter.post(
   ctrlWrapper(authController.requestResetEmailController),
 );
 
-// authRouter.get(
-//   '/verify-email',
-//   ctrlWrapper(authController.verifyEmailController),
-// );
+authRouter.get(
+  '/verify-email',
+  ctrlWrapper(authController.verifyEmailController),
+);
 
 authRouter.get(
   '/reset-password',

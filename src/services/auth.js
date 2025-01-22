@@ -1,19 +1,19 @@
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
+import jwt from 'jsonwebtoken';
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import { UsersCollection } from '../db/models/user.js';
 import { SessionCollection } from '../db/models/session.js';
 import {
   accessTokenLifetime,
   refreshTokenLifetime,
 } from '../constants/users.js';
-import jwt from 'jsonwebtoken';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 import { sendEmail } from '../utils/sendEmail.js';
-import handlebars from 'handlebars';
-import path from 'node:path';
-import fs from 'node:fs/promises';
 import {
   getFullNameFromGoogleTokenPayload,
   validateCode,
@@ -39,6 +39,24 @@ export const registerUser = async (payload) => {
     ...payload,
     password: hashPassword,
   });
+
+  // verify email sender
+  const verifyEmailTemplatePath = path.join(
+    TEMPLATES_DIR,
+    'verifyUserEmail.html',
+  );
+
+  const templateSource = (
+    await fs.readFile(verifyEmailTemplatePath)
+  ).toString();
+
+  const template = handlebars.compile(templateSource);
+
+  const html = template({
+    name: user.name,
+    link: `${getEnvVar('APP_DOMAIN')}/auth/verify-email?token=${token}`,
+  });
+  // // // // // // // //
 
   const { _id } = newUser;
 
@@ -73,9 +91,9 @@ export const loginUser = async ({ email, password }) => {
     throw createHttpError(401, 'Password invalid');
   }
 
-  // if (!user.verify) {
-  //   throw createHttpError(401, 'Please verify your email');
-  // }
+  if (!user.verify) {
+    throw createHttpError(401, 'Please verify your email');
+  }
 
   await SessionCollection.deleteOne({ userId: user._id });
 
@@ -143,7 +161,7 @@ export const requestResetEmailToken = async (email) => {
 
   const html = template({
     name: user.name,
-    link: `${getEnvVar('APP_DOMAIN')}/reset-password?token=${resetToken}`,
+    link: `${getEnvVar('APP_DOMAIN')}/auth/reset-password?token=${resetToken}`,
   });
 
   try {
